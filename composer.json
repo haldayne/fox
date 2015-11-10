@@ -1,0 +1,36 @@
+{
+    "name": "haldayne/fox",
+    "description": "Pre-built algorithms library for PHP.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bishop Bettini", "email": "bishop@php.net"
+        }
+    ],
+    "require": {
+        "php": "^5.5.0"
+    },
+    "autoload": {
+        "classmap": [ "src" ],
+        "psr-4": {
+            "Haldayne\\Fox\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "stable",
+    "require-dev": {
+        "phpunit/phpunit": "~5.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Haldayne\\Fox\\": "tests/"
+        }
+    }
+}
