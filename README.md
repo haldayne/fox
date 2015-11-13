@@ -10,7 +10,6 @@ parentheses. This approach allows you to set state before, and get state after,
 calling the helper routine:
 
 ```php
-// demonstrates the pattern, and actual library functionality
 use \Haldayne\Fox\CaptureErrors;
 $helper = new CaptureErrors(function ($input) { trigger_error('Oi!'); return $input; });
 $helper->setCapturedErrorTypes(E_ALL|~E_STRICT);
