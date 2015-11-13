@@ -1,15 +1,29 @@
 
-I sure do love a good helper function. Unfortunately, helper functions come
-along with frameworks, and I use different framework approaches in my legacy
-and modern code. I need a library of helper functions that *cross-cuts* my
-divergent frameworks. Enter `fox`.
+Many algorithms are generic. That is, the way the algorithm functions is
+independent of what the algorithm does to the underlying data. Let's take a
+specific example: `array_sum` and `implode`.  How do these function?  They
+iterate over an array, building up a return value.  Is there another PHP
+function that does that?  Yes, that's `array_reduce` and there's an
+equivalence:
 
-`fox` implements all helpful routines using the callable object pattern, which
-means you create an object implementing the routine, then invoke it with
+| Specific Function | Generic equivalent |
+| ----------------- | ------------------ |
+| `array_sum($a)` | `array_reduce($a, function ($t, $a) { return $t + $a; })` |
+| `implode(',', $a)` | `array_reduce(array_slice($a, 1), function ($t, $a) { return $t . ',' . $a; }, $a[0])` |
+
+You wouldn't do this in real life, but it demonstrates the concept of higher-
+order functions: one function taking another so as to abstract common behavior
+to one place.  As program designers, we want our language powerful enough to
+express the *concept of summation*, not just provide functions to compute sums.
+
+This package provides higher-order functions. All are implemented using the
+callable object pattern, which means you create an object implementing the
+generic behavior and passing it the specific function, then invoke it with
 parentheses. This approach allows you to set state before, and get state after,
-calling the helper routine:
+calling the algorithm:
 
 ```php
+// call some code, capturing PHP triggered errors locally
 use \Haldayne\Fox\CaptureErrors;
 $helper = new CaptureErrors(function ($input) { trigger_error('Oi!'); return $input; });
 $helper->setCapturedErrorTypes(E_ALL|~E_STRICT);
@@ -22,9 +36,9 @@ if (! $result) {
 
 # Installation
 
-Requires PHP version 5.5.0 or higher.  No other PHP extensions are required.
+Install with composer: `php composer.phar require haldayne/fox 1.0.x-dev`
 
-Install via composer: `php composer.phar require haldayne/fox 1.0.x-dev`
+Requires PHP version 5.5.0 or higher.  No other PHP extensions are required.
 
 
 # Select examples
