@@ -1,6 +1,6 @@
 {
     "name": "haldayne/fox",
-    "description": "Framework-agnostic helper routines for PHP.",
+    "description": "PHP implementation of generic, higher-order functions.",
     "license": "MIT",
     "authors": [
         {
