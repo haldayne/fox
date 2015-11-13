@@ -9,9 +9,9 @@ use Haldayne\Boost\Map;
  *
  * ```
  * use Haldayne\Fox\CaptureErrors;
- * $lambda = new CaptureErrors(function ($src, $dst) { return copy($src, $dst); });
- * if (false === $lambda('foo', 'bar')) {
- *     throw new \RuntimeException($lambda->getCapturedErrors()->pop()->get('message'));
+ * $helper = new CaptureErrors(function ($src, $dst) { return copy($src, $dst); });
+ * if (false === $helper('foo', 'bar')) {
+ *     throw new \RuntimeException($helper->getCapturedErrors()->pop()->get('message'));
  * }
  * ```
  *
@@ -21,20 +21,35 @@ use Haldayne\Boost\Map;
  * access to those frameworks.  Worse, you may be using code that deliberately
  * silences errors.
  *
- * Every raised error inside the Capture lambda is pushed into a Map stack,
+ * Errors raised inside the CaptureErrors helper is pushed into a Map stack,
  * with each element also a Map of the error details: error code, error
  * string, file and line where raised, and an array context of variables
  * set at time of error.
  */
 class CaptureErrors
 {
+    /**
+     * Create a new callable object that captures errors when the given code
+     * is invoked. By default, all errors (E_ALL) are captured. You can set
+     * which errors will be captured using the `setCapturedErrorTypes` method.
+     *
+     * @param callable $code
+     */
     public function __construct(callable $code)
     {
         $this->code = $code;
         $this->capturedErrorTypes = E_ALL;
-        $this->map = new Map();
+        $this->map = new MapOfMaps();
     }
 
+    /**
+     * Set the error types to capture. Acts as a filter: only those errors
+     * matching this value will be captured.
+     *
+     * @param int $capturedErrorTypes One or more of the E_* error constants
+     * @return void
+     * @throws \InvalidArgumentException If $capturedErrorTypes isn't an int
+     */
     public function setCapturedErrorTypes($capturedErrorTypes)
     {
         if (is_int($capturedErrorTypes)) {
@@ -44,7 +59,11 @@ class CaptureErrors
         }
     }
 
-    public function __invoke()
+    /**
+     * Invoke the helper. Passes any arguments into the callable given during
+     * helper construction. Returns any result from the callable.
+     */
+    public function __invoke(/* ... args */)
     {
         $old_handler = set_error_handler(
             function ($code, $message, $file, $line, $context) {
@@ -54,10 +73,16 @@ class CaptureErrors
             },
             $this->capturedErrorTypes
         );
-        call_user_func_array($this->code, func_get_args());
+        $result = call_user_func_array($this->code, func_get_args());
         set_error_handler($old_handler);
+        return $result;
     }
 
+    /**
+     * Get the captured errors.
+     *
+     * @return \Haldayne\Boost\MapOfMaps
+     */
     public function getCapturedErrors()
     {
         return $this->map;
@@ -66,5 +91,6 @@ class CaptureErrors
     // PRIVATE API
 
     private $code = null;
+    private $capturedErrorTypes = null;
     private $map = null;
 }
