@@ -1,21 +1,8 @@
 
----TODO---
-Every programmer knows how to compose functions, because we all do it every
-day. Here's a silly example: `printf("I ate %d apples", count($apples);`. The
-output of `count` becomes the input of `printf`. Simple, easy, and limited.
-Why stop there?
-
-We can write functions that take functions. This example may be familiar:
-`array_map(function ($number) { return $number * 2; }, $numbers);` Here, the
-outer `array_map` applies its own algorithm (iterating over the input array),
-using the output of the inner function "callback" as a transformer. The 
-composition happens inside the `array_map` algorithm.
----TODO---
-
 
 # Installation
 
-You need at least PHP 5.5.0.  No other extensions are required.
+Requires PHP version 5.5.0 or higher.  No other PHP extensions are required.
 
 Install via composer: `php composer.phar require haldayne/fox 1.0.x-dev`
 
@@ -49,6 +36,7 @@ All functions implemented as [callable classes][pack3]. Classes included in
 this package `\Haldayne\Fox\`:
 
 | Class | Description |
+|-------|-------------|
 | `Retry` | Retries a function until the function succeeds or fails the retry strategy. The default retry strategy attempts 5 calls and exponentially increases the delay between each call. You can define your own retry strategy. |
 | `CaptureErrors` | Calls a function, capturing all PHP errors raised during the execution of the function. Provides access to the queue of captured errors afterwards. |
 | `Expression` | Converts a string containing a PHP expression into a callable. Useful when you want to build small functions without the overhead of PHP closure syntax. |
