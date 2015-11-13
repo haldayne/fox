@@ -1,4 +1,25 @@
 
+I sure do love a good helper function. Unfortunately, helper functions come
+along with frameworks, and I use different framework approaches in my legacy
+and modern code. I need a library of helper functions that *cross-cuts* my
+divergent frameworks. Enter `fox`.
+
+`fox` implements all helpful routines using the callable object pattern, which
+means you create an object implementing the routine, then invoke it with
+parentheses. This approach allows you to set state before, and get state after,
+calling the helper routine:
+
+```php
+// demonstrates the pattern, and actual library functionality
+use \Haldayne\Fox\CaptureErrors;
+$helper = new CaptureErrors(function ($input) { trigger_error('Oi!'); return $input; });
+$helper->setCapturedErrorTypes(E_ALL|~E_STRICT);
+$result = $helper(false);
+if (! $result) {
+    die($helper->getCapturedErrors()->pop()->get('message'));
+}
+```
+
 
 # Installation
 
@@ -12,7 +33,7 @@ Install via composer: `php composer.phar require haldayne/fox 1.0.x-dev`
 **Retry a function until it either succeeds or reaches the maximum number of
 attempts. Delay each attempt by an exponentially increasing time:**
 
-```
+```php
 $retry = new \Haldayne\Fox\Retry(
     function ($src, $dst) {      // <---\
         return copy($src, $dst); // <----= this will be retried as necessary
@@ -48,11 +69,11 @@ this package `\Haldayne\Fox\`:
 [pack4]: http://matt.might.net/articles/implementation-of-recursive-fixed-point-y-combinator-in-javascript-for-memoization/
 
 
-# Miscellaneous and Trivia
+# Miscellaneous
 
 These algorithms can be composed together. The repository name `fox` is an
-abbreviation for `f(x)` said "f of x", which harks back to this function
-composition theme.
+abbreviation for `f(x)` said "f of x", which harks back to these functions'
+compositional ability.
 
 Both [Go][misc1] and [Java][misc2] have implementations of the Retry function
 with exponential backoff.

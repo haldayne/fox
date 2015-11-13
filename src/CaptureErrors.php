@@ -31,7 +31,17 @@ class CaptureErrors
     public function __construct(callable $code)
     {
         $this->code = $code;
+        $this->capturedErrorTypes = E_ALL;
         $this->map = new Map();
+    }
+
+    public function setCapturedErrorTypes($capturedErrorTypes)
+    {
+        if (is_int($capturedErrorTypes)) {
+            $this->capturedErrorTypes = $capturedErrorTypes;
+        } else {
+            throw new \InvalidArgumentException('$capturedErrorTypes must be integer');
+        }
     }
 
     public function __invoke()
@@ -41,7 +51,8 @@ class CaptureErrors
                 $this->map->push(
                     new Map(compact('code', 'message', 'file', 'line', 'context'))
                 );
-            }
+            },
+            $this->capturedErrorTypes
         );
         call_user_func_array($this->code, func_get_args());
         set_error_handler($old_handler);

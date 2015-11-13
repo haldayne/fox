@@ -1,6 +1,6 @@
 {
     "name": "haldayne/fox",
-    "description": "Pre-built algorithms library for PHP.",
+    "description": "Framework-agnostic helper routines for PHP.",
     "license": "MIT",
     "authors": [
         {
