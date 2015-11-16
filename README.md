@@ -28,13 +28,10 @@ Requires PHP version 5.5.0 or higher.  No other PHP extensions are required.
 attempts. Delay each attempt by an exponentially increasing time:**
 
 ```php
-$retry = new \Haldayne\Fox\Retry(
-    function ($src, $dst) { return copy($src, $dst); }
-);
-$ok = $retry('ssh2.sftp://user:pass@host/the/file', 'thefile');
-if (! $ok) {
+$retry = new \Haldayne\Fox\Retry(function ($src, $dst) { return copy($src, $dst); });
+$retry->setAttempts(3);
+$retry('ssh2.sftp://user:pass@host/the/file', 'thefile') or
     die("Copy failed after {$retry->getAttempts()} attempts");
-}
 ```
 
 
