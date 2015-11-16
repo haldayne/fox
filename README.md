@@ -29,9 +29,7 @@ attempts. Delay each attempt by an exponentially increasing time:**
 
 ```php
 $retry = new \Haldayne\Fox\Retry(
-    function ($src, $dst) {      // <---\
-        return copy($src, $dst); // <----= this will be retried as necessary
-    }                            // <---/
+    function ($src, $dst) { return copy($src, $dst); }
 );
 $ok = $retry('ssh2.sftp://user:pass@host/the/file', 'thefile');
 if (! $ok) {
