@@ -8,7 +8,8 @@
         }
     ],
     "require": {
-        "php": "^5.5.0"
+        "php": "^5.5.0",
+        "haldayne/boost": "^1.0-dev"
     },
     "autoload": {
         "classmap": [ "src" ],

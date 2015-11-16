@@ -2,6 +2,7 @@
 namespace Haldayne\Fox;
 
 use Haldayne\Boost\Map;
+use Haldayne\Boost\MapOfCollections;
 
 /**
  * Runs a callable, capturing all error messages, then provides a method to
@@ -39,7 +40,7 @@ class CaptureErrors
     {
         $this->code = $code;
         $this->capturedErrorTypes = E_ALL;
-        $this->map = new MapOfMaps();
+        $this->map = new MapOfCollections();
     }
 
     /**
@@ -81,7 +82,7 @@ class CaptureErrors
     /**
      * Get the captured errors.
      *
-     * @return \Haldayne\Boost\MapOfMaps
+     * @return \Haldayne\Boost\MapOfCollections
      */
     public function getCapturedErrors()
     {
