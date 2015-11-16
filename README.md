@@ -9,6 +9,8 @@ complex problems. See below and the [docs][over1].
 
 [over1]: http://haldayne-docs.readthedocs.org/en/latest/Fox/
 
+[![Latest Stable Version](https://poser.pugx.org/haldayne/fox/v/stable.png)](https://packagist.org/packages/haldayne/fox) [![Build Status](https://travis-ci.org/haldayne/fox.png?branch=master)](https://travis-ci.org/haldayne/fox) [![Coverage Status](https://coveralls.io/repos/haldayne/fox/badge.png?branch=master)](https://coveralls.io/r/haldayne/fox?branch=master)
+[![Monthly Downloads](https://poser.pugx.org/haldayne/fox/d/monthly.png)](https://packagist.org/packages/haldayne/fox)
 
 # Installation
 
