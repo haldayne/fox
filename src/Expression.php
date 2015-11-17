@@ -117,7 +117,9 @@ class Expression
 
     /**
      * Given a string expression, turn that into an anonymous function.
-     * Cache the result, so as to keep memory 
+     * Cache the result, so as to keep memory impacts low.
+     *
+     * @throw \LogicException
      */
     private static function makeCallable($expression)
     {

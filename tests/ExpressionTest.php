@@ -27,7 +27,7 @@ class ExpressionTest extends \PHPUnit_Framework_TestCase
      */
     public function test_throws_logicexception_on_bad_php_code()
     {
-        new Expression('return ;');
+        @new Expression('return (return);');
     }
 
     public function test_caching()
