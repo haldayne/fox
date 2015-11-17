@@ -66,7 +66,7 @@ class CaptureErrors
      */
     public function __invoke(/* ... args */)
     {
-        $old_handler = set_error_handler(
+        set_error_handler(
             function ($code, $message, $file, $line, $context) {
                 $this->map->push(
                     new Map(compact('code', 'message', 'file', 'line', 'context'))
@@ -75,7 +75,7 @@ class CaptureErrors
             $this->capturedErrorTypes
         );
         $result = call_user_func_array($this->code, func_get_args());
-        set_error_handler($old_handler);
+        restore_error_handler();
         return $result;
     }
 
