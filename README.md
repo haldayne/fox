@@ -50,6 +50,24 @@ Extensive documentation is available at Read the Docs:
 [pack3]: http://haldayne-docs.readthedocs.org/en/latest/Fox/list-of-generic-functions/
 
 
+# Contributing
+
+Your contribution is welcome! [Open an issue][contrib1] or [create a gist][contrib2]
+showing how you're using fox.  If you want to [add a new algorithm][contrib3]
+to fox, please keep these in mind:
+
+* Please fork the repository and create a PR.
+* Use [PSR-2][contrib4].
+* Update tests so that you have at least 80% coverage.
+* Choose something useful. If the algorithm takes many arguments, or exposes
+state after calculating a result, it's a good candidate.
+
+[contrib1]: https://github.com/haldayne/fox/issues
+[contrib2]: https://gist.github.com/
+[contrib3]: https://github.com/haldayne/fox/pulls
+[contrib4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
+
+
 # Miscellaneous
 
 These algorithms can be composed together. The repository name `fox` is an
