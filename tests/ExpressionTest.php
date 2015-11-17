@@ -6,7 +6,7 @@ class ExpressionTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provides_expressions_and_io
      */
-    public function test_execution($expression, array $input, $output)
+    public function test_execution_on_good_expression($expression, array $input, $output)
     {
         $fn = new Expression($expression);
         $this->assertSame($output, call_user_func_array($fn, $input));
@@ -16,9 +16,18 @@ class ExpressionTest extends \PHPUnit_Framework_TestCase
      * @dataProvider provides_invalid_expressions
      * @expectedException \InvalidArgumentException
      */
-    public function test_throws_invalidargument($expression)
+    public function test_throws_invalidargument_on_non_string_expressions($expression)
     {
         new Expression($expression);
+    }
+
+    /**
+     * @dataProvider provides_invalid_expressions
+     * @expectedException \LogicException
+     */
+    public function test_throws_logicexception_on_bad_php_code()
+    {
+        new Expression('return ;');
     }
 
     public function test_caching()

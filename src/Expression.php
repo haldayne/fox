@@ -43,19 +43,24 @@ class Expression
      *
      * If the expression is already callable, returns it untouched. If the
      * expression is a string, a closure will be wrapped around the string
-     * returning it as a single line. In this case, the first nine positional
+     * returning it as a single value. In this case, the first 10 positional
      * arguments are available as $_0, $_1, ..., $_9.
      *
      * ```
-     * $lt = new Expression('$_0 < $_1');
+     * $lt = new Expression('$_0 < $_1'); // expressions is a comparison
      * var_dump($lt(0, 1)); // true
      * var_dump($lt(1, 0)); // false
      * var_dump($lt());     // false (null not less than null)
      * var_dump($lt(-1));   // true (-1 is less than null)
      * ```
+     *
+     * Do not include a `return` in your expression.
      * 
      * @param callable|string $expression
      * @throws \InvalidArgumentException When $expression not of expected type
+     * @throws \LogicException When $expression does not form valid PHP code
+     *
+     * @see http://php.net/manual/en/language.expressions.php Definition of PHP expression
      */
     public function __construct($expression)
     {
@@ -106,16 +111,28 @@ class Expression
 
     /**
      * In memory cache of built expressions.
-     * @var \Haldayne\ArraySugar\Map $map
+     * @var \Haldayne\Boost\Map $map
      */
     private static $map = [];
+
+    /**
+     * Given a string expression, turn that into an anonymous function.
+     * Cache the result, so as to keep memory 
+     */
     private static function makeCallable($expression)
     {
         if (! array_key_exists($expression, static::$map)) {
-            static::$map[$expression] = create_function(
-                static::$signature,
-                "return ($expression);"
-            );
+            $return = "return ($expression);";
+            $lambda = @create_function(static::$signature, $return);
+            if (false === $lambda) {
+                throw new \LogicException(sprintf(
+                    'Expression does not result in valid PHP code. You gave=[%s], becomes=[%s]',
+                    $expression,
+                    $return
+                ));
+            } else {
+                static::$map[$expression] = $lambda;
+            }
         }
         return static::$map[$expression];
     }
