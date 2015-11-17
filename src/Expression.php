@@ -123,7 +123,7 @@ class Expression
     {
         if (! array_key_exists($expression, static::$map)) {
             $return = "return ($expression);";
-            $lambda = @create_function(static::$signature, $return);
+            $lambda = create_function(static::$signature, $return);
             if (false === $lambda) {
                 throw new \LogicException(sprintf(
                     'Expression does not result in valid PHP code. You gave=[%s], becomes=[%s]',
