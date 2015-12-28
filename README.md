@@ -17,7 +17,7 @@ complex problems. See below and the [docs][over1].
 
 # Installation
 
-Install with composer: `php composer.phar require haldayne/fox 1.0.x-dev`
+Install with composer: `php composer.phar require haldayne/fox ^1.0`
 
 Requires PHP version 5.5.0 or higher.  No other PHP extensions are required.
 
