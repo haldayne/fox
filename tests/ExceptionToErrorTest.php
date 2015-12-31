@@ -12,7 +12,7 @@ class ExceptionToErrorTest extends \PHPUnit_Framework_TestCase
                 function () use ($ex) { throw $ex; return true; }
             )
         );
-        $result = $capture($message, $code);
+        $result = $capture();
         $this->assertSame(false, $result);
         $this->assertSame(
             $convert->formatException($ex),
@@ -33,7 +33,7 @@ class ExceptionToErrorTest extends \PHPUnit_Framework_TestCase
 
         // capture
         $capture = new CaptureErrors($convert);
-        $result = $capture($message, $code);
+        $result = $capture();
 
         // ensure we match on the custom values
         $this->assertSame(
