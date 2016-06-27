@@ -125,15 +125,20 @@ class Expression
     {
         if (! array_key_exists($expression, static::$map)) {
             $return = "return ($expression);";
-            $lambda = create_function(static::$signature, $return);
-            if (false === $lambda) {
-                throw new \LogicException(sprintf(
-                    'Expression does not result in valid PHP code. You gave=[%s], becomes=[%s]',
-                    $expression,
-                    $return
-                ));
-            } else {
-                static::$map[$expression] = $lambda;
+            try {
+                $lambda = create_function(static::$signature, $return);
+            } catch (\ParseError $ex) {
+                $lambda = false;
+            } finally {
+                if (false === $lambda) {
+                    throw new \LogicException(sprintf(
+                        'Expression is not valid PHP code: given=[%s], becomes=[%s]',
+                        $expression,
+                        $return
+                    ));
+                } else {
+                    static::$map[$expression] = $lambda;
+                }
             }
         }
         return static::$map[$expression];
